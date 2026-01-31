@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>艾莎·植觉花艺 | 德阳专业花艺设计</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="德阳市旌阳区希望城玫瑰湾9栋1-3号专业花艺定制、派对布置、现场氛围设计" />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/96/000000/flower.png">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Lightbox -->
+  <link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+</head>
+<body class="bg-gradient-to-b from-rose-50 to-white text-gray-800 font-sans">
+
+<!-- ================= 管理员上传面板（开发时可显示） ================= -->
+<div id="adminPanel" class="fixed bottom-4 right-4 z-50">
+  <button onclick="toggleAdminPanel()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all">
+    <i class="fas fa-cloud-upload-alt text-xl"></i>
+  </button>
+  
+  <div id="uploadForm" class="hidden bg-white rounded-2xl shadow-2xl p-6 mt-4 w-96 max-w-[90vw]">
+    <h3 class="text-xl font-bold mb-4 text-gray-800 flex items-center">
+      <i class="fas fa-images mr-2 text-pink-500"></i> 作品上传管理
+    </h3>
+    
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">作品标题</label>
+        <input type="text" id="mediaTitle" 
+               class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+               placeholder="例如：浪漫婚礼花艺设计">
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">作品类型</label>
+        <select id="mediaType" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500">
+          <option value="image">图片 (.jpg, .png, .webp)</option>
+          <option value="video">视频 (.mp4, .mov)</option>
+        </select>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">作品分类</label>
+        <div class="grid grid-cols-3 gap-2">
+          <label class="flex items-center">
+            <input type="checkbox" name="category" value="flower" class="mr-2 text-pink-500" checked> 鲜花定制
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" name="category" value="party" class="mr-2 text-pink-500"> 派对布置
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" name="category" value="scene" class="mr-2 text-pink-500"> 现场布置
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" name="category" value="opening" class="mr-2 text-pink-500"> 开业花篮
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" name="category" value="festival" class="mr-2 text-pink-500"> 节日花礼
+          </label>
+        </div>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">作品文件</label>
+        <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-pink-400 transition-colors"
+             id="dropZone">
+          <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+          <p class="text-gray-600 mb-2">拖放文件到这里，或点击选择</p>
+          <p class="text-sm text-gray-500">支持图片和视频文件</p>
+          <input type="file" id="fileInput" class="hidden" accept="image/*,video/*">
+        </div>
+        <div id="preview" class="mt-4 hidden">
+          <p class="text-sm text-gray-600">预览：</p>
+          <div id="previewContent" class="mt-2"></div>
+        </div>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">作品描述（可选）</label>
+        <textarea id="mediaDescription" rows="3" 
+                  class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500"
+                  placeholder="添加作品描述..."></textarea>
+      </div>
+      
+      <div class="flex space-x-3 pt-4">
+        <button onclick="addMediaItem()" 
+                class="flex-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
+          <i class="fas fa-plus mr-2"></i> 添加到画廊
+        </button>
+        <button onclick="saveToLocalStorage()" 
+                class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
+          <i class="fas fa-save mr-2"></i> 保存数据
+        </button>
+      </div>
+      
+      <div class="pt-4 border-t border-gray-200">
+        <h4 class="font-semibold text-gray-700 mb-2">管理选项</h4>
+        <div class="flex space-x-2">
+          <button onclick="loadFromLocalStorage()" 
+                  class="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+            加载数据
+          </button>
+          <button onclick="exportData()" 
+                  class="flex-1 bg-blue-100 text-blue-700 py-2 rounded-lg hover:bg-blue-200 transition-colors">
+            导出数据
+          </button>
+          <button onclick="clearAllData()" 
+                  class="flex-1 bg-red-100 text-red-700 py-2 rounded-lg hover:bg-red-200 transition-colors">
+            清空数据
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= Header ================= -->
+<header class="bg-white/95 backdrop-blur-sm shadow-lg sticky top-0 z-40 border-b border-rose-100">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <div class="flex items-center space-x-2">
+      <div class="w-10 h-10 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center">
+        <i class="fas fa-spa text-white text-lg"></i>
+      </div>
+      <h1 class="text-2xl font-bold bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent">艾莎·植觉花艺</h1>
+    </div>
+    
+    <div class="flex items-center space-x-4">
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="#services" class="text-gray-600 hover:text-pink-500 transition-colors">服务项目</a>
+        <a href="#gallery" class="text-gray-600 hover:text-pink-500 transition-colors">作品展示</a>
+        <a href="#contact" class="text-gray-600 hover:text-pink-500 transition-colors">联系我们</a>
+      </div>
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 bg-gradient-to-r from-pink-100 to-rose-100 rounded-full flex items-center justify-center">
+          <i class="fas fa-phone-alt text-pink-500 text-sm"></i>
+        </div>
+        <div class="text-sm">
+          <div class="font-semibold text-gray-700">📞 17780228551</div>
+          <div class="text-xs text-gray-500">/ 18880886743</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= Hero ================= -->
+<section class="relative min-h-[70vh] flex items-center justify-center px-4">
+  <div class="absolute inset-0 bg-gradient-to-br from-pink-50 via-rose-50 to-orange-50"></div>
+  <div class="relative z-10 text-center max-w-4xl mx-auto">
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+      <span class="bg-gradient-to-r from-pink-500 via-rose-500 to-purple-500 bg-clip-text text-transparent">
+        德阳专业花艺设计
+      </span>
+    </h1>
+    <p class="text-xl text-gray-600 mb-8">鲜花定制 · 派对布置 · 开业花篮 · 现场氛围设计</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="#gallery" 
+         class="px-8 py-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+        浏览作品
+      </a>
+      <a href="#contact" 
+         class="px-8 py-3 border-2 border-pink-300 text-pink-600 rounded-full font-semibold hover:bg-pink-50 transition-all duration-300">
+        立即咨询
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Services ================= -->
+<section id="services" class="py-16 bg-white">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12">我们的服务</h2>
+    
+    <div class="grid md:grid-cols-4 gap-6">
+      <div class="bg-gradient-to-br from-pink-50 to-rose-50 p-6 rounded-2xl text-center hover:shadow-lg transition-all">
+        <div class="w-16 h-16 mx-auto bg-gradient-to-br from-pink-200 to-rose-200 rounded-full flex items-center justify-center mb-4">
+          <i class="fas fa-bouquet text-2xl text-pink-500"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">鲜花定制</h3>
+        <p class="text-gray-600 text-sm">花束/花盒/桌花/手捧花</p>
+      </div>
+
+      <div class="bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-2xl text-center hover:shadow-lg transition-all">
+        <div class="w-16 h-16 mx-auto bg-gradient-to-br from-yellow-200 to-orange-200 rounded-full flex items-center justify-center mb-4">
+          <i class="fas fa-birthday-cake text-2xl text-yellow-500"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">派对布置</h3>
+        <p class="text-gray-600 text-sm">生日/求婚/宝宝宴/主题派对</p>
+      </div>
+
+      <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-2xl text-center hover:shadow-lg transition-all">
+        <div class="w-16 h-16 mx-auto bg-gradient-to-br from-green-200 to-emerald-200 rounded-full flex items-center justify-center mb-4">
+          <i class="fas fa-gift text-2xl text-green-500"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">开业花篮</h3>
+        <p class="text-gray-600 text-sm">商业庆典/开业仪式/乔迁之喜</p>
+      </div>
+
+      <div class="bg-gradient-to-br from-purple-50 to-indigo-50 p-6 rounded-2xl text-center hover:shadow-lg transition-all">
+        <div class="w-16 h-16 mx-auto bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full flex items-center justify-center mb-4">
+          <i class="fas fa-spa text-2xl text-purple-500"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">现场布置</h3>
+        <p class="text-gray-600 text-sm">婚礼/活动现场/商业空间</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Gallery Options ================= -->
+<section class="py-8 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="bg-white rounded-2xl p-6 shadow-md">
+      <h3 class="text-xl font-bold mb-4 text-center">🎨 浏览选项</h3>
+      <div class="flex flex-wrap gap-4 justify-center items-center">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">展示模式：</label>
+          <select id="viewMode" class="px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500">
+            <option value="random">随机展示</option>
+            <option value="category">按分类浏览</option>
+            <option value="newest">最新作品优先</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">作品类型：</label>
+          <select id="mediaFilter" class="px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500">
+            <option value="all">全部类型</option>
+            <option value="image">仅图片</option>
+            <option value="video">仅视频</option>
+          </select>
+        </div>
+        
+        <button onclick="applyGallerySettings()" 
+                class="px-6 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all mt-6">
+          应用设置
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Gallery ================= -->
+<section id="gallery" class="py-16 bg-white">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-4">作品展示</h2>
+    <p class="text-gray-600 text-center mb-8">选择分类浏览或随机欣赏我们的花艺作品</p>
+    
+    <!-- 分类筛选 -->
+    <div class="flex flex-wrap gap-3 justify-center mb-10">
+      <button class="filter-btn btn-active px-5 py-2 rounded-full transition-all" data-filter="all">
+        全部
+      </button>
+      <button class="filter-btn px-5 py-2 rounded-full transition-all" data-filter="flower">
+        鲜花定制
+      </button>
+      <button class="filter-btn px-5 py-2 rounded-full transition-all" data-filter="party">
+        派对布置
+      </button>
+      <button class="filter-btn px-5 py-2 rounded-full transition-all" data-filter="opening">
+        开业花篮
+      </button>
+      <button class="filter-btn px-5 py-2 rounded-full transition-all" data-filter="scene">
+        现场布置
+      </button>
+      <button class="filter-btn px-5 py-2 rounded-full transition-all" data-filter="festival">
+        节日花礼
+      </button>
+    </div>
+    
+    <!-- 作品展示区 -->
+    <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <!-- 作品将通过JavaScript动态加载 -->
+    </div>
+    
+    <!-- 加载更多 -->
+    <div class="text-center mt-12">
+      <button id="loadMoreBtn" onclick="loadMoreItems()" 
+              class="px-8 py-3 border-2 border-pink-300 text-pink-600 rounded-full font-semibold hover:bg-pink-50 transition-all">
+        加载更多作品
+      </button>
+      <p class="text-sm text-gray-500 mt-4">当前显示 <span id="itemCount">0</span> 个作品</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section id="contact" class="py-20 bg-gradient-to-br from-pink-50 to-rose-100">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl">
+      <h2 class="text-3xl font-bold mb-6">联系我们</h2>
+      
+      <div class="grid md:grid-cols-2 gap-8 mb-8">
+        <div class="text-left">
+          <h3 class="text-xl font-semibold mb-4 flex items-center">
+            <i class="fas fa-store mr-2 text-pink-500"></i> 实体店地址
+          </h3>
+          <p class="text-gray-700 mb-2">
+            <i class="fas fa-map-marker-alt text-pink-400 mr-2"></i>
+            德阳市旌阳区希望城玫瑰湾9栋1-3号
+          </p>
+          <p class="text-sm text-gray-500 mt-4">欢迎到店咨询，感受花艺的魅力</p>
+        </div>
+        
+        <div class="text-left">
+          <h3 class="text-xl font-semibold mb-4 flex items-center">
+            <i class="fas fa-phone mr-2 text-pink-500"></i> 联系方式
+          </h3>
+          <div class="space-y-3">
+            <p class="text-gray-700">
+              <i class="fas fa-phone text-pink-400 mr-2"></i>
+              17780228551
+            </p>
+            <p class="text-gray-700">
+              <i class="fas fa-mobile-alt text-pink-400 mr-2"></i>
+              18880886743
+            </p>
+            <p class="text-sm text-gray-500 mt-4">微信同号，欢迎随时咨询</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-gray-50 rounded-xl p-6">
+        <h4 class="font-semibold mb-3">服务时间</h4>
+        <p class="text-gray-700">
+          <i class="far fa-clock text-pink-400 mr-2"></i>
+          周一至周日：9:00 - 21:00
+        </p>
+        <p class="text-sm text-gray-500 mt-2">节假日正常营业，支持预约服务</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Footer ================= -->
+<footer class="bg-gray-900 text-white py-12">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="text-center">
+      <h3 class="text-2xl font-bold mb-2">艾莎·植觉花艺</h3>
+      <p class="text-gray-400 mb-6">德阳市旌阳区希望城玫瑰湾9栋1-3号</p>
+      
+      <div class="flex justify-center space-x-6 mb-8">
+        <a href="tel:17780228551" class="hover:text-pink-300 transition-colors">
+          <i class="fas fa-phone mr-2"></i>17780228551
+        </a>
+        <a href="tel:18880886743" class="hover:text-pink-300 transition-colors">
+          <i class="fas fa-mobile-alt mr-2"></i>18880886743
+        </a>
+      </div>
+      
+      <p class="text-gray-500 text-sm">© 2024 艾莎·植觉花艺 版权所有</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= 主要脚本 ================= -->
+<script>
+// ===== 全局变量 =====
+let mediaData = []; // 存储所有作品数据
+let currentFilter = 'all'; // 当前筛选条件
+let itemsPerPage = 12; // 每页显示数量
+let currentPage = 1; // 当前页码
+let viewMode = 'random'; // 展示模式
+let mediaTypeFilter = 'all'; // 媒体类型筛选
+
+// ===== 初始化默认数据 =====
+const defaultData = [
+  { 
+    id: 1, 
+    title: '浪漫玫瑰婚礼花艺', 
+    type: 'image', 
+    categories: ['flower', 'scene'], 
+    src: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    description: '婚礼现场主舞台花艺设计',
+    date: '2024-03-15'
+  },
+  { 
+    id: 2, 
+    title: '开业大吉花篮', 
+    type: 'image', 
+    categories: ['opening'], 
+    src: 'https://images.unsplash.com/photo-1563170351-be82bc888aa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    description: '商业开业庆典花篮',
+    date: '2024-03-10'
+  },
+  { 
+    id: 3, 
+    title: '生日派对布置', 
+    type: 'image', 
+    categories: ['party'], 
+    src: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    description: '主题生日派对场景布置',
+    date: '2024-03-05'
+  },
+  { 
+    id: 4, 
+    title: '情人节花礼', 
+    type: 'image', 
+    categories: ['flower', 'festival'], 
+    src: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    description: '情人节限定玫瑰花束',
+    date: '2024-02-14'
+  },
+  { 
+    id: 5, 
+    title: '花艺布置过程', 
+    type: 'video', 
+    categories: ['scene'], 
+    src: 'https://assets.mixkit.co/videos/preview/mixkit-pink-and-white-flowers-on-a-table-14120-large.mp4',
+    description: '现场花艺布置记录',
+    date: '2024-03-01'
+  },
+  { 
+    id: 6, 
+    title: '商务会议桌花', 
+    type: 'image', 
+    categories: ['flower'], 
+    src: 'https://images.unsplash.com/photo-1459156212016-c812468e2115?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    description: '企业会议桌花设计',
+    date: '2024-02-28'
+  }
+];
+
+// ===== 页面加载初始化 =====
+document.addEventListener('DOMContentLoaded', function() {
+  // 尝试从本地存储加载数据
+  loadFromLocalStorage();
+  
+  // 如果没有数据，使用默认数据
+  if (mediaData.length === 0) {
+    mediaData = [...defaultData];
+  }
+  
+  // 初始化画廊
+  renderGallery();
+  
+  // 初始化Lightbox
+  GLightbox({
+    selector: '.glightbox',
+    touchNavigation: true,
+    loop: true
+  });
+  
+  // 设置文件上传事件
+  setupFileUpload();
+});
+
+// ===== 文件上传功能 =====
+function setupFileUpload() {
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+  
+  // 点击选择文件
+  dropZone.addEventListener('click', () => {
+    fileInput.click();
+  });
+  
+  // 文件选择变化
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+      handleFileSelect(e.target.files[0]);
+    }
+  });
+  
+  // 拖放功能
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('border-pink-500', 'bg-pink-50');
+  });
+  
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('border-pink-500', 'bg-pink-50');
+  });
+  
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('border-pink-500', 'bg-pink-50');
+    
+    if (e.dataTransfer.files.length > 0) {
+      handleFileSelect(e.dataTransfer.files[0]);
+    }
+  });
+}
+
+// ===== 处理文件选择 =====
+let selectedFile = null;
+
+function handleFileSelect(file) {
+  selectedFile = file;
+  
+  // 显示预览
+  const preview = document.getElementById('preview');
+  const previewContent = document.getElementById('previewContent');
+  
+  previewContent.innerHTML = '';
+  
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      previewContent.innerHTML = `
+        <div class="flex items-center space-x-4">
+          <img src="${e.target.result}" class="w-20 h-20 object-cover rounded-lg">
+          <div>
+            <p class="font-medium">${file.name}</p>
+            <p class="text-sm text-gray-500">${(file.size / 1024).toFixed(1)} KB</p>
+          </div>
+        </div>
+      `;
+    };
+    reader.readAsDataURL(file);
+  } else if (file.type.startsWith('video/')) {
+    previewContent.innerHTML = `
+      <div class="flex items-center space-x-4">
+        <div class="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
+          <i class="fas fa-video text-2xl text-gray-400"></i>
+        </div>
+        <div>
+          <p class="font-medium">${file.name}</p>
+          <p class="text-sm text-gray-500">视频文件 - ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+        </div>
+      </div>
+    `;
+  }
+  
+  preview.classList.remove('hidden');
+  
+  // 自动设置类型
+  const typeSelect = document.getElementById('mediaType');
+  if (file.type.startsWith('image/')) {
+    typeSelect.value = 'image';
+  } else if (file.type.startsWith('video/')) {
+    typeSelect.value = 'video';
+  }
+}
+
+// ===== 添加作品 =====
+function addMediaItem() {
+  const title = document.getElementById('mediaTitle').value.trim();
+  const type = document.getElementById('mediaType').value;
+  const description = document.getElementById('mediaDescription').value.trim();
+  
+  if (!title) {
+    alert('请填写作品标题');
+    return;
+  }
+  
+  // 获取选中的分类
+  const checkboxes = document.querySelectorAll('input[name="category"]:checked');
+  const categories = Array.from(checkboxes).map(cb => cb.value);
+  
+  if (categories.length === 0) {
+    alert('请至少选择一个分类');
+    return;
+  }
+  
+  // 创建新作品对象
+  const newItem = {
+    id: Date.now(), // 使用时间戳作为ID
+    title: title,
+    type: type,
+    categories: categories,
+    description: description || '暂无描述',
+    date: new Date().toISOString().split('T')[0]
+  };
+  
+  // 如果有上传文件，创建本地URL
+  if (selectedFile) {
+    const objectURL = URL.createObjectURL(selectedFile);
+    newItem.src = objectURL;
+    newItem.filename = selectedFile.name;
+  } else {
+    // 如果没有上传文件，使用占位图
+    newItem.src = type === 'image' 
+      ? 'https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      : 'https://assets.mixkit.co/videos/preview/mixkit-pink-and-white-flowers-on-a-table-14120-large.mp4';
+  }
+  
+  // 添加到数据数组
+  mediaData.unshift(newItem);
+  
+  // 重置表单
+  document.getElementById('mediaTitle').value = '';
+  document.getElementById('mediaDescription').value = '';
+  document.getElementById('preview').classList.add('hidden');
+  selectedFile = null;
+  
+  // 更新画廊
+  renderGallery();
+  
+  alert('作品添加成功！');
+}
+
+// ===== 渲染画廊 =====
+function renderGallery() {
+  const container = document.getElementById('galleryContainer');
+  const itemCount = document.getElementById('itemCount');
+  
+  container.innerHTML = '';
+  
+  // 根据筛选条件过滤数据
+  let filteredData = mediaData;
+  
+  // 应用分类筛选
+  if (currentFilter !== 'all') {
+    filteredData = filteredData.filter(item => 
+      item.categories.includes(currentFilter)
+    );
+  }
+  
+  // 应用类型筛选
+  if (mediaTypeFilter !== 'all') {
+    filteredData = filteredData.filter(item => 
+      item.type === mediaTypeFilter
+    );
+  }
+  
+  // 应用展示模式
+  if (viewMode === 'newest') {
+    filteredData.sort((a, b) => new Date(b.date) - new Date(a.date));
+  } else if (viewMode === 'random') {
+    filteredData = shuffleArray([...filtereredData]);
+  }
+  
+  // 分页处理
+  const startIndex = 0;
+  const endIndex = currentPage * itemsPerPage;
+  const itemsToShow = filteredData.slice(startIndex, endIndex);
+  
+  // 渲染作品
+  itemsToShow.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1';
+    
+    if (item.type === 'image') {
+      div.innerHTML = `
+        <a href="${item.src}" class="glightbox" data-title="${item.title}">
+          <div class="aspect-square overflow-hidden">
+            <img src="${item.src}" alt="${item.title}" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+          </div>
+          <div class="p-4">
+            <h4 class="font-semibold text-gray-800 mb-1">${item.title}</h4>
+            <div class="flex flex-wrap gap-1 mb-2">
+              ${item.categories.map(cat => 
+                `<span class="text-xs px-2 py-1 rounded-full ${getCategoryColor(cat)}">${getCategoryName(cat)}</span>`
+              ).join('')}
+            </div>
+            <p class="text-sm text-gray-600">${item.description}</p>
+          </div>
+        </a>
+      `;
+    } else {
+      div.innerHTML = `
+        <div class="aspect-square overflow-hidden bg-black">
+          <video src="${item.src}" class="w-full h-full object-cover" controls></video>
+        </div>
+        <div class="p-4">
+          <h4 class="font-semibold text-gray-800 mb-1">${item.title} <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">视频</span></h4>
+          <div class="flex flex-wrap gap-1 mb-2">
+            ${item.categories.map(cat => 
+              `<span class="text-xs px-2 py-1 rounded-full ${getCategoryColor(cat)}">${getCategoryName(cat)}</span>`
+            ).join('')}
+          </div>
+          <p class="text-sm text-gray-600">${item.description}</p>
+        </div>
+      `;
+    }
+    
+    container.appendChild(div);
+  });
+  
+  // 更新计数
+  itemCount.textContent = itemsToShow.length;
+  
+  // 显示/隐藏"加载更多"按钮
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  if (filteredData.length > itemsToShow.length) {
+    loadMoreBtn.classList.remove('hidden');
+  } else {
+    loadMoreBtn.classList.add('hidden');
+  }
+}
+
+// ===== 分类工具函数 =====
+function getCategoryName(category) {
+  const names = {
+    'flower': '鲜花定制',
+    'party': '派对布置',
+    'opening': '开业花篮',
+    'scene': '现场布置',
+    'festival': '节日花礼'
+  };
+  return names[category] || category;
+}
+
+function getCategoryColor(category) {
+  const colors = {
+    'flower': 'bg-pink-100 text-pink-800',
+    'party': 'bg-yellow-100 text-yellow-800',
+    'opening': 'bg-green-100 text-green-800',
+    'scene': 'bg-purple-100 text-purple-800',
+    'festival': 'bg-red-100 text-red-800'
+  };
+  return colors[category] || 'bg-gray-100 text-gray-800';
+}
+
+// ===== 工具函数 =====
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function toggleAdminPanel() {
+  const form = document.getElementById('uploadForm');
+  form.classList.toggle('hidden');
+}
+
+// ===== 数据管理功能 =====
+function saveToLocalStorage() {
+  try {
+    // 将数据转换为可存储的格式
+    const dataToSave = mediaData.map(item => {
+      const newItem = { ...item };
+      // 如果是本地文件URL，转换为base64或标记
+      if (item.src && item.src.startsWith('blob:')) {
+        newItem.isLocalFile = true;
+        newItem.filename = item.filename || 'local-file.jpg';
+      }
+      return newItem;
+    });
+    
+    localStorage.setItem('elsaFlowerData', JSON.stringify(dataToSave));
+    alert('数据保存成功！已保存到浏览器本地存储。');
+  } catch (error) {
+    alert('保存失败：' + error.message);
+  }
+}
+
+function loadFromLocalStorage() {
+  try {
+    const savedData = localStorage.getItem('elsaFlowerData');
+    if (savedData) {
+      mediaData = JSON.parse(savedData);
+      renderGallery();
+      alert('数据加载成功！');
+    } else {
+      alert('没有找到保存的数据。');
+    }
+  } catch (error) {
+    alert('加载失败：' + error.message);
+  }
+}
+
+function exportData() {
+  try {
+    const dataStr = JSON.stringify(mediaData, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+    const exportFileDefaultName = 'elsa-flower-data.json';
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+    
+    alert('数据导出成功！');
+  } catch (error) {
+    alert('导出失败：' + error.message);
+  }
+}
+
+function clearAllData() {
+  if (confirm('确定要清空所有作品数据吗？此操作不可恢复！')) {
+    mediaData = [...defaultData];
+    localStorage.removeItem('elsaFlowerData');
+    renderGallery();
+    alert('数据已重置为默认数据。');
+  }
+}
+
+// ===== 画廊交互功能 =====
+function applyGallerySettings() {
+  viewMode = document.getElementById('viewMode').value;
+  mediaTypeFilter = document.getElementById('mediaFilter').value;
+  currentPage = 1; // 重置页码
+  renderGallery();
+}
+
+function loadMoreItems() {
+  currentPage++;
+  renderGallery();
+}
+
+// ===== 分类筛选功能 =====
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    // 更新按钮状态
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('btn-active');
+      b.classList.remove('bg-gradient-to-r', 'from-pink-500', 'to-rose-500', 'text-white');
+      b.classList.add('bg-gray-100', 'text-gray-700');
+    });
+    
+    this.classList.add('btn-active');
+    this.classList.add('bg-gradient-to-r', 'from-pink-500', 'to-rose-500', 'text-white');
+    this.classList.remove('bg-gray-100', 'text-gray-700');
+    
+    // 更新筛选条件
+    currentFilter = this.dataset.filter;
+    currentPage = 1; // 重置页码
+    renderGallery();
+  });
+});
+
+// ===== 样式 =====
+const style = document.createElement('style');
+style.textContent = `
+.filter-btn {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.filter-btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-active {
+  border: none !important;
+}
+
+#dropZone:hover {
+  cursor: pointer;
+}
+
+.glightbox-container {
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 640px) {
+  #uploadForm {
+    width: calc(100vw - 2rem);
+    left: 1rem;
+    right: 1rem;
+  }
+}
+`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>
