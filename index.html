@@ -1,292 +1,1030 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<title>艾莎·植觉花艺 | 德阳专业花艺设计</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="鲜花定制、派对布置、婚礼现场、开业花篮、节日花礼 - 德阳艾莎·植觉花艺">
-
-<link rel="icon" href="https://img.icons8.com/color/96/flower.png">
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
-<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
-
-<!-- 百度地图 -->
-<script src="https://api.map.baidu.com/api?v=3.0&ak=MeY9hHEuoukfX1grOUoepd7I8m7l9E8F"></script>
-
+    <meta charset="UTF-8">
+    <title>艾莎·植觉花艺 | 德阳专业花艺设计</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="鲜花定制、派对布置、婚礼现场、开业花篮、节日花礼 - 德阳艾莎·植觉花艺">
+    
+    <!-- 简单版本 - 不使用CDN，减少依赖 -->
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(to bottom, #fff5f7, #ffffff);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f472b6, #db2777);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .logo-text h1 {
+            font-size: 24px;
+            color: #db2777;
+            font-weight: bold;
+        }
+        
+        .logo-text p {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #db2777;
+        }
+        
+        .contact-info {
+            text-align: right;
+        }
+        
+        .phone {
+            font-size: 16px;
+            font-weight: bold;
+            color: #db2777;
+        }
+        
+        .hours {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 轮播样式 */
+        .hero {
+            height: 70vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slider-container {
+            height: 100%;
+            position: relative;
+        }
+        
+        .slider {
+            height: 100%;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero-text h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-text p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #db2777;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+        }
+        
+        /* 服务项目 */
+        .services {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title span {
+            color: #db2777;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: #333;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .service-card {
+            background: #fdf2f8;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 24px;
+            color: #db2777;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .service-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        /* 作品展示 */
+        .gallery {
+            padding: 80px 0;
+            background: #fdf2f8;
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            background: white;
+            border: none;
+            border-radius: 20px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn:hover {
+            background: #fce7f3;
+        }
+        
+        .filter-btn.active {
+            background: #db2777;
+            color: white;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .gallery-item img,
+        .gallery-item video {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img,
+        .gallery-item:hover video {
+            transform: scale(1.05);
+        }
+        
+        .item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 20px;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover .item-overlay {
+            transform: translateY(0);
+        }
+        
+        .item-overlay h3 {
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+        
+        /* 关于我们 */
+        .about {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .about-image {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-text h2 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat {
+            background: #fdf2f8;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #db2777;
+            margin-bottom: 5px;
+        }
+        
+        /* 联系我们 */
+        .contact {
+            padding: 80px 0;
+            background: #fdf2f8;
+        }
+        
+        .contact-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .contact-info {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: #fdf2f8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #db2777;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .map-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        #baiduMap {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        /* 页脚 */
+        footer {
+            background: #333;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #db2777;
+        }
+        
+        .copyright {
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        /* 浮动按钮 */
+        .float-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .float-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .float-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .phone-btn {
+            background: #db2777;
+        }
+        
+        .wechat-btn {
+            background: #22c55e;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero-text h2 {
+                font-size: 32px;
+            }
+            
+            .hero-text p {
+                font-size: 16px;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .services-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-gradient-to-b from-rose-50 to-white text-gray-800">
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <span>🌸</span>
+                </div>
+                <div class="logo-text">
+                    <h1>艾莎·植觉花艺</h1>
+                    <p>用花艺诠释生活的美好</p>
+                </div>
+            </div>
+            
+            <nav>
+                <a href="#home">首页</a>
+                <a href="#services">服务项目</a>
+                <a href="#gallery">作品展示</a>
+                <a href="#about">关于我们</a>
+                <a href="#contact">联系我们</a>
+            </nav>
+            
+            <div class="contact-info">
+                <div class="phone">📞 177-8022-8551</div>
+                <div class="hours">咨询时间：9:00-21:00</div>
+            </div>
+        </div>
+    </header>
 
-<!-- ================= Header ================= -->
-<header class="bg-white shadow sticky top-0 z-50">
-<div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <!-- 轮播 -->
+    <section id="home" class="hero">
+        <div class="slider-container">
+            <div class="slider" id="slider">
+                <!-- 幻灯片由JS动态生成 -->
+            </div>
+            <div class="hero-overlay">
+                <div class="hero-text">
+                    <h2>用鲜花点亮重要时刻</h2>
+                    <p>专业花艺设计，为您的每一个特殊时刻增添浪漫与温馨</p>
+                    <a href="#contact" class="cta-button">预约设计</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div class="flex items-center gap-2">
-<div class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
-<i class="fas fa-spa text-white"></i>
-</div>
-<h1 class="text-2xl font-bold text-pink-600">艾莎·植觉花艺</h1>
-</div>
+    <!-- 服务项目 -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-title">
+                <span>我们的专业服务</span>
+                <h2>提供全面的花艺解决方案</h2>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span>🌸</span>
+                    </div>
+                    <h3>鲜花定制</h3>
+                    <p>个性花束设计、日常鲜花配送、特别纪念日花礼</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span>🎉</span>
+                    </div>
+                    <h3>派对布置</h3>
+                    <p>生日派对、庆祝活动、主题派对的现场花艺装饰</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span>🏵</span>
+                    </div>
+                    <h3>开业花篮</h3>
+                    <p>商业开业、庆典活动的花篮设计与现场布置</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span>💍</span>
+                    </div>
+                    <h3>婚礼现场</h3>
+                    <p>婚礼仪式区、宴会厅、新娘捧花等全方位花艺设计</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<nav class="hidden md:flex gap-6">
-<a href="#services">服务项目</a>
-<a href="#festival">节日专区</a>
-<a href="#gallery">作品展示</a>
-<a href="#contact">联系我们</a>
-</nav>
+    <!-- 作品展示 -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <div class="section-title">
+                <span>作品展示</span>
+                <h2>我们的花艺作品</h2>
+            </div>
+            
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">全部作品</button>
+                <button class="filter-btn" data-filter="flower">鲜花花束</button>
+                <button class="filter-btn" data-filter="party">派对布置</button>
+                <button class="filter-btn" data-filter="opening">开业花篮</button>
+                <button class="filter-btn" data-filter="scene">婚礼现场</button>
+                <button class="filter-btn" data-filter="festival">节日花礼</button>
+                <button class="filter-btn" data-filter="video">视频作品</button>
+            </div>
+            
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- 作品由JS动态生成 -->
+            </div>
+        </div>
+    </section>
 
-<div class="text-sm">
-<p>📞 17780228551</p>
-<p>📞 18880886743</p>
-</div>
+    <!-- 关于我们 -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-title">
+                <span>关于我们</span>
+                <h2>艾莎·植觉花艺</h2>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-image">
+                    <img id="aboutImage" src="" alt="花艺工作室">
+                </div>
+                <div class="about-text">
+                    <p>我们是一支充满热情和专业的花艺团队，成立于2018年，深耕德阳地区花艺设计行业。</p>
+                    <p>我们的理念是"用花艺诠释生活的美好"，专注于为客户打造独特而精致的鲜花作品。</p>
+                    <p>无论是日常鲜花、节日礼物还是大型活动布置，我们都用心对待每一个细节。</p>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">成功案例</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">1000+</div>
+                            <div class="stat-label">满意客户</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</div>
-</header>
+    <!-- 联系我们 -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-title">
+                <span>联系我们</span>
+                <h2>期待为您服务</h2>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <h3>店铺地址</h3>
+                            <p>德阳市旌阳区希望城玫瑰湾9栋1-3号</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div>
+                            <h3>联系电话</h3>
+                            <p>177-8022-8551</p>
+                            <p>188-8088-6743</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">🕒</div>
+                        <div>
+                            <h3>营业时间</h3>
+                            <p>周一至周日 9:00 - 21:00</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <h3>店铺位置</h3>
+                    <div id="baiduMap"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- ================= 轮播 ================= -->
-<section class="relative h-[70vh] overflow-hidden">
-<div id="slider" class="w-full h-full"></div>
-<div class="absolute inset-0 bg-black/30 flex items-center justify-center">
-<h2 class="text-white text-4xl md:text-5xl font-bold">
-用鲜花点亮重要时刻
-</h2>
-</div>
-</section>
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <span>🌸</span>
+                </div>
+                <div class="logo-text">
+                    <h1 style="color: white;">艾莎·植觉花艺</h1>
+                    <p style="color: #aaa;">用花艺诠释生活的美好</p>
+                </div>
+            </div>
+            
+            <div class="social-links">
+                <a href="#" title="微信">💬</a>
+                <a href="#" title="微博">📱</a>
+                <a href="#" title="抖音">🎵</a>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2024 艾莎·植觉花艺 版权所有</p>
+                <p>德阳市旌阳区希望城玫瑰湾9栋1-3号</p>
+                <p>营业时间：9:00-21:00 | 联系电话：177-8022-8551</p>
+            </div>
+        </div>
+    </footer>
 
-<!-- ================= Services ================= -->
-<section id="services" class="py-16 bg-white">
-<div class="max-w-6xl mx-auto px-4">
+    <!-- 浮动按钮 -->
+    <div class="float-buttons">
+        <button class="float-btn phone-btn" onclick="callPhone()">
+            📞
+        </button>
+        <button class="float-btn wechat-btn" onclick="showWechat()">
+            💬
+        </button>
+    </div>
 
-<h2 class="text-3xl font-bold text-center mb-10">我们的服务</h2>
+    <!-- 微信弹窗 -->
+    <div id="wechatModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; max-width: 300px;">
+            <button onclick="closeWechat()" style="background: none; border: none; font-size: 24px; float: right; cursor: pointer;">×</button>
+            <h3 style="margin: 20px 0; color: #333;">微信咨询</h3>
+            <img id="wechatQR" src="" alt="微信二维码" style="width: 200px; height: 200px; margin: 0 auto 20px; border: 1px solid #eee;">
+            <p style="color: #666;">扫描二维码添加客服微信</p>
+            <p style="font-size: 12px; color: #999; margin-top: 10px;">添加时请备注"花艺咨询"</p>
+        </div>
+    </div>
 
-<div class="grid md:grid-cols-4 gap-6 text-center">
+    <!-- 百度地图 -->
+    <script src="https://api.map.baidu.com/api?v=3.0&ak=MeY9hHEuoukfX1grOUoepd7I8m7l9E8F"></script>
 
-<div class="p-6 bg-pink-50 rounded-xl">🌸 鲜花定制</div>
-<div class="p-6 bg-yellow-50 rounded-xl">🎉 派对布置</div>
-<div class="p-6 bg-green-50 rounded-xl">🏵 开业花篮</div>
-<div class="p-6 bg-purple-50 rounded-xl">💍 婚礼现场</div>
+    <script>
+        // 媒体数据 - 使用相对路径
+        const mediaData = [
+            // 鲜花图片
+            { id: 1, title: "情人节玫瑰花束", type: "image", categories: ["flower", "festival"], src: "./assets/images/flower/1.jpg", desc: "红玫瑰与满天星的完美搭配" },
+            { id: 2, title: "清新百合花束", type: "image", categories: ["flower"], src: "./assets/images/flower/2.jpg", desc: "纯洁的百合花与绿叶的组合" },
+            { id: 3, title: "多彩混搭花束", type: "image", categories: ["flower"], src: "./assets/images/flower/3.jpg", desc: "多种鲜花组合的精致花束" },
+            
+            // 派对布置
+            { id: 4, title: "生日派对布置", type: "image", categories: ["party"], src: "./assets/images/party/1.jpg", desc: "温馨浪漫的生日宴会装饰" },
+            { id: 5, title: "庆祝活动布置", type: "image", categories: ["party"], src: "./assets/images/party/2.jpg", desc: "庆典活动的现场花艺装饰" },
+            { id: 6, title: "派对现场布置", type: "image", categories: ["party"], src: "./assets/images/party/3.jpg", desc: "主题派对的精美装饰" },
+            
+            // 开业花篮
+            { id: 7, title: "开业庆典花篮", type: "image", categories: ["opening"], src: "./assets/images/opening/1.jpg", desc: "商业开业用的大型花篮" },
+            { id: 8, title: "庆典花篮设计", type: "image", categories: ["opening"], src: "./assets/images/opening/2.jpg", desc: "精美的庆典花篮" },
+            { id: 9, title: "开业花篮组合", type: "image", categories: ["opening"], src: "./assets/images/opening/3.jpg", desc: "开业庆典花篮组合" },
+            
+            // 婚礼现场
+            { id: 10, title: "婚礼鲜花拱门", type: "image", categories: ["scene", "festival"], src: "./assets/images/scene/1.jpg", desc: "浪漫的婚礼仪式区装饰" },
+            { id: 11, title: "婚礼手捧花", type: "image", categories: ["scene"], src: "./assets/images/scene/2.jpg", desc: "新娘手捧花设计" },
+            { id: 12, title: "婚礼宴会布置", type: "image", categories: ["scene"], src: "./assets/images/scene/3.jpg", desc: "婚礼宴会厅花艺装饰" },
+            
+            // 节日专区
+            { id: 13, title: "母亲节感恩花篮", type: "image", categories: ["festival", "flower"], src: "./assets/images/festival/1.jpg", desc: "康乃馨与百合的温馨组合" },
+            { id: 14, title: "圣诞节花艺设计", type: "image", categories: ["festival"], src: "./assets/images/festival/2.jpg", desc: "圣诞主题花艺布置" },
+            { id: 15, title: "春节喜庆花篮", type: "image", categories: ["festival", "opening"], src: "./assets/images/festival/3.jpg", desc: "春节传统花艺设计" },
+            
+            // 视频作品
+            { id: 16, title: "婚礼现场布置视频", type: "video", categories: ["video", "scene"], src: "./assets/videos/1.mp4", desc: "婚礼现场花艺布置过程" },
+            { id: 17, title: "花束制作过程", type: "video", categories: ["video", "flower"], src: "./assets/videos/2.mp4", desc: "专业花束制作技巧展示" },
+            { id: 18, title: "派对布置记录", type: "video", categories: ["video", "party"], src: "./assets/videos/3.mp4", desc: "生日派对现场布置记录" }
+        ];
 
-</div>
-</div>
-</section>
+        let currentFilter = "all";
+        let currentSlide = 0;
 
-<!-- ================= 节日专区 ================= -->
-<section id="festival" class="py-16 bg-pink-50">
-<div class="max-w-6xl mx-auto px-4">
-<h2 class="text-3xl font-bold text-center mb-10">🎉 节日专区</h2>
-<div id="festivalContainer" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-</div>
-</section>
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            initSlider();
+            initGallery();
+            initBaiduMap();
+            initNavigation();
+            
+            // 设置关于我们的图片
+            document.getElementById('aboutImage').src = "./assets/images/scene/1.jpg";
+            
+            // 设置微信二维码
+            document.getElementById('wechatQR').src = "./assets/images/wechat.png";
+        });
 
-<!-- ================= Gallery ================= -->
-<section id="gallery" class="py-16">
-<div class="max-w-6xl mx-auto px-4">
+        // 初始化轮播
+        function initSlider() {
+            const slider = document.getElementById('slider');
+            const flowerImages = mediaData.filter(item => 
+                item.categories.includes('flower') && item.type === 'image'
+            ).slice(0, 3);
+            
+            flowerImages.forEach((item, index) => {
+                const slide = document.createElement('div');
+                slide.className = `slide ${index === 0 ? 'active' : ''}`;
+                slide.innerHTML = `<img src="${item.src}" alt="${item.title}">`;
+                slider.appendChild(slide);
+            });
+            
+            // 自动轮播
+            setInterval(() => {
+                const slides = document.querySelectorAll('.slide');
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 5000);
+        }
 
-<h2 class="text-3xl font-bold text-center mb-10">作品展示</h2>
+        // 初始化作品展示
+        function initGallery() {
+            renderGallery();
+            
+            // 筛选按钮事件
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => 
+                        b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    renderGallery();
+                });
+            });
+        }
 
-<div class="flex justify-center gap-3 mb-6">
-<button class="filter-btn active" data-filter="all">全部</button>
-<button class="filter-btn" data-filter="flower">鲜花</button>
-<button class="filter-btn" data-filter="party">派对</button>
-<button class="filter-btn" data-filter="opening">开业</button>
-<button class="filter-btn" data-filter="scene">现场</button>
-<button class="filter-btn" data-filter="festival">节日</button>
-</div>
+        // 渲染作品
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
+            
+            const filtered = mediaData.filter(item => {
+                if (currentFilter === 'all') return true;
+                return item.categories.includes(currentFilter);
+            });
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:#666;grid-column:1/-1;padding:40px;">暂无作品</p>';
+                return;
+            }
+            
+            filtered.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'gallery-item';
+                itemElement.setAttribute('data-categories', item.categories.join(' '));
+                
+                if (item.type === 'image') {
+                    itemElement.innerHTML = `
+                        <img src="${item.src}" alt="${item.title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDMwMCAyNTAiIGZpbGw9IiNmOGY4ZjgiPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiNjY2MiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkltYWdlPC90ZXh0Pjwvc3ZnPg=='">
+                        <div class="item-overlay">
+                            <h3>${item.title}</h3>
+                            <p>${item.desc}</p>
+                        </div>
+                    `;
+                    
+                    itemElement.addEventListener('click', function() {
+                        showLightbox(item.src, item.title);
+                    });
+                } else {
+                    itemElement.innerHTML = `
+                        <video preload="metadata">
+                            <source src="${item.src}" type="video/mp4">
+                        </video>
+                        <div class="item-overlay">
+                            <h3>${item.title}</h3>
+                            <p>${item.desc}</p>
+                            <p style="margin-top:5px;font-size:12px;">▶ 点击播放</p>
+                        </div>
+                    `;
+                    
+                    itemElement.addEventListener('click', function(e) {
+                        if (e.target.tagName !== 'VIDEO') {
+                            const video = this.querySelector('video');
+                            if (video.paused) {
+                                video.play();
+                                this.querySelector('.item-overlay').style.opacity = '0';
+                            } else {
+                                video.pause();
+                                this.querySelector('.item-overlay').style.opacity = '1';
+                            }
+                        }
+                    });
+                }
+                
+                grid.appendChild(itemElement);
+            });
+        }
 
-<div id="galleryContainer" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+        // 图片灯箱
+        function showLightbox(src, title) {
+            const lightbox = document.createElement('div');
+            lightbox.style.cssText = `
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
+                background: rgba(0,0,0,0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2000;
+            `;
+            
+            lightbox.innerHTML = `
+                <div style="position:relative;">
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="position:absolute;top:-40px;right:0;background:none;border:none;color:white;font-size:30px;cursor:pointer;">
+                        ×
+                    </button>
+                    <img src="${src}" alt="${title}" style="max-width:90vw;max-height:90vh;">
+                    <div style="color:white;text-align:center;margin-top:10px;">${title}</div>
+                </div>
+            `;
+            
+            document.body.appendChild(lightbox);
+            
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    lightbox.remove();
+                }
+            });
+        }
 
-</div>
-</section>
+        // 百度地图
+        function initBaiduMap() {
+            if (typeof BMap !== 'undefined') {
+                const map = new BMap.Map("baiduMap");
+                const point = new BMap.Point(104.3896, 31.1304);
+                map.centerAndZoom(point, 17);
+                map.enableScrollWheelZoom(true);
+                
+                const marker = new BMap.Marker(point);
+                map.addOverlay(marker);
+                
+                const info = new BMap.InfoWindow(
+                    "艾莎·植觉花艺<br>德阳市旌阳区希望城玫瑰湾9栋1-3号"
+                );
+                marker.addEventListener("click", function() {
+                    this.openInfoWindow(info);
+                });
+            }
+        }
 
-<!-- ================= Contact ================= -->
-<section id="contact" class="py-16 bg-pink-50">
-<div class="max-w-4xl mx-auto px-4 text-center">
+        // 导航平滑滚动
+        function initNavigation() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
 
-<h2 class="text-3xl font-bold mb-6">联系我们</h2>
+        // 电话拨打
+        function callPhone() {
+            window.open('tel:17780228551');
+        }
 
-<p>📍 德阳市旌阳区希望城玫瑰湾9栋1-3号</p>
-<p>📞 17780228551</p>
-<p>📞 18880886743</p>
+        // 微信弹窗
+        function showWechat() {
+            document.getElementById('wechatModal').style.display = 'flex';
+        }
 
-<!-- 百度地图 -->
-<div id="baiduMap" class="w-full h-[400px] mt-8 rounded-xl overflow-hidden"></div>
+        function closeWechat() {
+            document.getElementById('wechatModal').style.display = 'none';
+        }
 
-</div>
-</section>
-
-<!-- ================= 微信浮窗 ================= -->
-<div id="wechatBtn"
-class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center shadow-lg cursor-pointer">
-<i class="fab fa-weixin text-white text-2xl"></i>
-</div>
-
-<div id="wechatBox"
-class="hidden fixed bottom-24 right-6 bg-white p-3 rounded-xl shadow-lg">
-<img src="assets/images/wechat.png" class="w-40">
-<p class="text-center mt-2">微信咨询</p>
-</div>
-
-<!-- ================= Footer ================= -->
-<footer class="bg-gray-900 text-white py-6 text-center">
-© 2026 艾莎·植觉花艺
-</footer>
-
-<!-- ================= JS ================= -->
-<script>
-
-const mediaData = [
-{
-id:1,
-title:"情人节玫瑰花束",
-type:"image",
-categories:["flower","festival"],
-src:"assets/images/flower/valentine01.jpg"
-},
-{
-id:2,
-title:"生日派对布置",
-type:"image",
-categories:["party"],
-src:"assets/images/party/birthday01.jpg"
-},
-{
-id:3,
-title:"开业花篮",
-type:"image",
-categories:["opening"],
-src:"assets/images/opening/open01.jpg"
-},
-{
-id:4,
-title:"婚礼现场视频",
-type:"video",
-categories:["scene"],
-src:"assets/videos/scene/wedding01.mp4"
-}
-];
-
-let currentFilter="all";
-
-document.addEventListener("DOMContentLoaded",()=>{
-renderSlider();
-renderFestival();
-renderGallery();
-GLightbox({selector:".glightbox"});
-initBaiduMap();
-});
-
-// ================= 轮播 =================
-function renderSlider(){
-const slider=document.getElementById("slider");
-const slides=mediaData.filter(i=>i.type==="image").slice(0,3);
-
-slides.forEach((item,i)=>{
-const div=document.createElement("div");
-div.className="slide absolute inset-0";
-div.style.backgroundImage=`url(${item.src})`;
-div.style.backgroundSize="cover";
-div.style.backgroundPosition="center";
-div.style.opacity=i===0?1:0;
-slider.appendChild(div);
-});
-
-let index=0;
-setInterval(()=>{
-const all=document.querySelectorAll(".slide");
-all.forEach(s=>s.style.opacity=0);
-index=(index+1)%all.length;
-all[index].style.opacity=1;
-},4000);
-}
-
-// ================= 节日 =================
-function renderFestival(){
-const box=document.getElementById("festivalContainer");
-mediaData.filter(i=>i.categories.includes("festival"))
-.forEach(item=>{
-box.innerHTML+=`
-<a href="${item.src}" class="glightbox">
-<img src="${item.src}" class="rounded-xl h-60 w-full object-cover">
-</a>`;
-});
-}
-
-// ================= 画廊 =================
-function renderGallery(){
-const box=document.getElementById("galleryContainer");
-box.innerHTML="";
-
-mediaData.filter(item=>{
-return currentFilter==="all" ||
-item.categories.includes(currentFilter);
-})
-.forEach(item=>{
-if(item.type==="image"){
-box.innerHTML+=`
-<a href="${item.src}" class="glightbox">
-<img src="${item.src}" class="rounded-xl h-60 w-full object-cover">
-<p class="text-center mt-1">${item.title}</p>
-</a>`;
-}else{
-box.innerHTML+=`
-<video src="${item.src}" controls
-class="rounded-xl h-60 w-full object-cover"></video>
-<p class="text-center mt-1">${item.title}</p>`;
-}
-});
-}
-
-// ================= 分类 =================
-document.querySelectorAll(".filter-btn").forEach(btn=>{
-btn.onclick=()=>{
-document.querySelectorAll(".filter-btn")
-.forEach(b=>b.classList.remove("active"));
-btn.classList.add("active");
-currentFilter=btn.dataset.filter;
-renderGallery();
-};
-});
-
-// ================= 微信 =================
-const wbtn=document.getElementById("wechatBtn");
-const wbox=document.getElementById("wechatBox");
-wbtn.onclick=()=>wbox.classList.toggle("hidden");
-
-// ================= 百度地图 =================
-function initBaiduMap(){
-const map=new BMap.Map("baiduMap");
-const point=new BMap.Point(104.3896,31.1304);
-map.centerAndZoom(point,17);
-map.enableScrollWheelZoom(true);
-
-const marker=new BMap.Marker(point);
-map.addOverlay(marker);
-
-const info=new BMap.InfoWindow(
-"艾莎·植觉花艺<br>德阳市旌阳区希望城玫瑰湾9栋1-3号"
-);
-marker.openInfoWindow(info);
-}
-
-</script>
-
-<style>
-.filter-btn{
-padding:8px 18px;
-border-radius:20px;
-background:#eee;
-}
-.filter-btn.active{
-background:#ec4899;
-color:white;
-}
-.slide{transition:opacity 1s;}
-</style>
-
+        // 错误处理
+        window.addEventListener('error', function(e) {
+            console.log('错误:', e.message);
+        });
+    </script>
 </body>
 </html>
